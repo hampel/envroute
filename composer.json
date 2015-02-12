@@ -1,0 +1,33 @@
+{
+    "name": "hampel/envroute",
+    "description": "Package for customising the Laravel environment based on route",
+	"homepage" : "https://bitbucket.org/hampel/envroute",
+	"authors": [{
+		"name": "Simon Hampel",
+		"email": "simon@hampelgroup.com",
+		"homepage": "http://hampelgroup.com/",
+		"role": "Developer"
+	}],
+	"support": {
+		"email": "support@hampelgroup.com",
+		"issues": "https://bitbucket.org/hampel/envroute/issues",
+		"source": "https://bitbucket.org/hampel/envroute/src"
+	},
+	"keywords" : [
+		"laravel",
+		"environment"
+	],
+	"license" : [
+		"MIT"
+	],
+	"require": {
+		"php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "EnvRoute\\": "src/"
+        }
+    },
+ 	"minimum-stability": "dev",
+	"prefer-stable": true
+}
