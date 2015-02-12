@@ -18,7 +18,7 @@ Require the package via Composer in your `composer.json`
     :::json
     {
         "require": {
-            "hampel/envroute": "dev-master@dev"
+            "hampel/envroute": "^0.1"
         }
     }
 
