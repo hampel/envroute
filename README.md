@@ -1,10 +1,37 @@
 EnvRoute for Laravel
 ====================
 
-This package provides route-based environment detection for Laravel v5.x - it is intended for use in development
-environments for testing packages using Laravel as a test harness.
+This package provides route-based environment detection and configuration for Laravel v5.x - it is intended for use in 
+development environments for testing packages using Laravel as a test harness.
 
 By [Simon Hampel](http://hampelgroup.com/).
+
+This package works on the assumption that you have multiple independent packages (that may or may not depend on Laravel)
+which you develop locally and you have a single Laravel framework installation which you use as a test harness for
+exercising your packages above and beyond what you might do in unit tests.
+
+It does not matter where your packages are installed - I have started placing mine in the `/packages` directory under
+the Laravel root folder, but the EnvRoute configuration for each package can be set to handle any location.
+ 
+The other assumption is that you want to be able to autoload a specific package to work on, without autoloading other 
+unrelated packages you might be working on.
+
+This was one limitation of the Laravel 4.x Workbench in that it always autoloaded every package in the Workbench, which
+sometimes lead to inconsistent or undesirable behaviour - particularly when you have packages depending on different
+versions of the same package.
+
+For example, let's say you develop PackageA, which has a dependency on PackageX v1.1.*, and you also develop PackageB, 
+which also has a dependency on PackageX, but requires v2.0.*
+
+In Workbench, you would run `composer update` to generate the autoload file for any dependencies on each package.
+However, because all vendor autoload files from all packages are autoloaded, what happens is that PackageX v1.1.* is 
+autoloaded first (because this is the first one it finds when searching), and then PackageX v2.0.* is never made 
+available to your packageB when testing. The only way around this is to delete the `vendor` folder from PackageA before
+testing PackageB, which is a pain - especially if you forget and subtble package dependency differences give you 
+unexpected results which take you time to diagnose.
+
+EnvRoute solves this by allowing you to selectively autoload only the dependencies you need and then set a custom
+environment configuration to test in.
 
 Installation
 ------------
@@ -18,7 +45,7 @@ Require the package via Composer in your `composer.json`
     :::json
     {
         "require": {
-            "hampel/envroute": "^0.1"
+            "hampel/envroute": "^0.2"
         }
     }
 
@@ -48,8 +75,30 @@ should not cause any problems.
 **Note** - DO NOT change the namespace for your Laravel Framework - this package assumes that the base classes will be
 found in the default `App` namespace.
 
+To use the service provider loader, you will need to first add the EnvRoute service provider to your Laravel framework
+installation. Open your Laravel config file `config/app.php` and add the following service providers in the 
+`$providers` array:
+
+    :::php
+    "providers" => array(
+
+        ...
+
+    	'EnvRoute\EnvRouteServiceProvider',
+
+    ),
+
+Next, publish the EnvRoute configuration:
+
+    :::bash
+    $ php artisan vendor:publish
+
+Follow the instructions in the usage section for how to configure EnvRoute to work with your packages. 
+
 Usage
 -----
+
+### Routes ###
 
 The EnvRoute package changes the default environment detection mechanism for Laravel 5, from on the base route called.
 
@@ -75,3 +124,44 @@ would call our .env file `.env.foo`. You can then configure this .env file with 
 be loaded whenever you visit a URL starting with `/foo`.
 
 **Note** the APP_ENV setting in the .env file is ignored when using this package.
+
+### Autoloading ###
+
+To set up autoloading of your package files, edit the `config/envroute.php`, configuration file to add the path to your
+package. The list of packages is an array, with each key corresponding to the environment route we set up in the 
+previous step.
+
+    :::php
+    'packages' => [
+    
+    	'foo' => [
+    		'path' => base_path() . '/packages/foo',
+    	],
+    
+    ],
+    
+In the above example, we have a package named 'foo' (this doesn't have to correspond to the actual package name we are
+testing - but it does have to correspond to the name of the route prefix). We define our route prefix for testing as
+`/foo` and a corresponding environment file `.foo.env`.
+ 
+Our configuration tells the autoloader that the foo package is being developed in the folder `/packages/foo` and once we
+have run `composer update` in this folder to load all package dependencies and create the autoload file, our package
+is ready for testing.
+
+### Service Providers ###
+
+If your package has service providers which need to be loaded, add them to a `providers` array key in the configuration.
+For example:
+
+    :::php
+    'packages' => [
+    
+    	'foo' => [
+    		'path' => base_path() . '/packages/foo',
+    
+    		'providers' => [
+    			'FooInc\Foo',
+    		],
+    	],
+    ],
+
