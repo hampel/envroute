@@ -33,6 +33,16 @@ class EnvRouteServiceProvider extends ServiceProvider {
 			$package = $packages[$env];
 
 			$files = new Filesystem();
+			if (!$files->exists($package['path'] . '/composer.json'))
+			{
+				die("Could not locate composer.json file, [" . $package['path'] . "] does not seem to be a valid package directory");
+			}
+
+			if (!$files->exists($package['path'] . '/vendor/autoload.php'))
+			{
+				die("Could not autoload dependencies for package {$env}, vendor autoload file not found. Please run 'composer update' in the folder [" . $package['path'] . "]");
+			}
+
 			$files->requireOnce($package['path'] . '/vendor/autoload.php');
 
 			if (array_key_exists('providers', $package))
