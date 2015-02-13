@@ -97,7 +97,7 @@ installation. Open your Laravel config file `config/app.php` and add the followi
 Next, publish the EnvRoute configuration:
 
     :::bash
-    $ php artisan vendor:publish
+    $ php artisan vendor:publish --provider="EnvRoute\EnvRouteServiceProvider"
 
 Follow the instructions in the usage section for how to configure EnvRoute to work with your packages. 
 
