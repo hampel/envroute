@@ -37,7 +37,7 @@ class EnvRouteServiceProvider extends ServiceProvider {
 	{
 		$this->publishes([
 			__DIR__ . '/config/envroute.php' => config_path('envroute.php'),
-		]);
+		], 'config');
 
 		$this->mergeConfigFrom(
 			__DIR__ . '/config/envroute.php', 'envroute'
