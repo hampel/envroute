@@ -165,6 +165,9 @@ For example:
     	],
     ],
 
+Note that this isn't restricted to just your packages own service providers - any other service providers your package
+(or test harness) depends on which aren't already loaded by the base framework should be added to the providers array. 
+
 ### Aliases ###
 
 If your package has an alias (facade) which need to be loaded, add them to a `aliases` array key in the configuration.
