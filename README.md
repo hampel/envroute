@@ -20,12 +20,12 @@ This was one limitation of the Laravel 4.x Workbench in that it always autoloade
 sometimes lead to inconsistent or undesirable behaviour - particularly when you have packages depending on different
 versions of the same package.
 
-For example, let's say you develop PackageA, which has a dependency on PackageX v1.1.*, and you also develop PackageB, 
-which also has a dependency on PackageX, but requires v2.0.*
+For example, let's say you develop PackageA, which has a dependency on PackageX v1.1.\*, and you also develop PackageB, 
+which also has a dependency on PackageX, but requires v2.0.\*
 
 In Workbench, you would run `composer update` to generate the autoload file for any dependencies on each package.
-However, because all vendor autoload files from all packages are autoloaded, what happens is that PackageX v1.1.* is 
-autoloaded first (because this is the first one it finds when searching), and then PackageX v2.0.* is never made 
+However, because all vendor autoload files from all packages are autoloaded, what happens is that PackageX v1.1.\* is 
+autoloaded first (because this is the first one it finds when searching), and then PackageX v2.0.\* is never made 
 available to your packageB when testing. The only way around this is to delete the `vendor` folder from PackageA before
 testing PackageB, which is a pain - especially if you forget and subtble package dependency differences give you 
 unexpected results which take you time to diagnose.
