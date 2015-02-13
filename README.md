@@ -27,7 +27,7 @@ In Workbench, you would run `composer update` to generate the autoload file for 
 However, because all vendor autoload files from all packages are autoloaded, what happens is that PackageX v1.1.\* is 
 autoloaded first (because this is the first one it finds when searching), and then PackageX v2.0.\* is never made 
 available to your packageB when testing. The only way around this is to delete the `vendor` folder from PackageA before
-testing PackageB, which is a pain - especially if you forget and subtble package dependency differences give you 
+testing PackageB, which is a pain - especially if you forget and subtle package dependency differences give you 
 unexpected results which take you time to diagnose.
 
 EnvRoute solves this by allowing you to selectively autoload only the dependencies you need and then set a custom
@@ -45,7 +45,7 @@ Require the package via Composer in your `composer.json`
     :::json
     {
         "require": {
-            "hampel/envroute": "^0.2"
+            "hampel/envroute": "^0.3"
         }
     }
 
@@ -165,3 +165,23 @@ For example:
     	],
     ],
 
+### Aliases ###
+
+If your package has an alias (facade) which need to be loaded, add them to a `aliases` array key in the configuration.
+For example:
+
+    :::php
+    'packages' => [
+    
+    	'foo' => [
+    		'path' => base_path() . '/packages/foo',
+    
+    		'providers' => [
+    			'FooInc\Foo',
+    		],
+    		
+    		'aliases' => [
+    			'Foo' => 'FooInc\Foo\Facades\Foo',
+    		]
+    	],
+    ],
