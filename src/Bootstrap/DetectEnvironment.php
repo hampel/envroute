@@ -1,7 +1,7 @@
 <?php namespace EnvRoute\Bootstrap;
 
-use Dotenv;
-use InvalidArgumentException;
+use Dotenv\Dotenv;
+use Dotenv\Exception\InvalidPathException;
 use Illuminate\Contracts\Foundation\Application;
 
 class DetectEnvironment {
@@ -31,14 +31,19 @@ class DetectEnvironment {
 	{
 		if (!empty($path))
 		{
-			$app->loadEnvironmentFrom(".env.{$path}");
+			$file = ".env.{$path}";
+
+			if (file_exists($app->environmentPath().'/'.$file))
+			{
+				$app->loadEnvironmentFrom(".env.{$path}");
+			}
 		}
 
 		try
 		{
-			Dotenv::load($app['path.base'], $app->environmentFile());
+			(new Dotenv($app->environmentPath(), $app->environmentFile()))->load();
 		}
-		catch (InvalidArgumentException $e)
+		catch (InvalidPathException $e)
 		{
 			die($e->getMessage());
 		}
