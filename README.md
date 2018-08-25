@@ -66,13 +66,13 @@ file. Edit `bootstrap/app.php`, remove or comment out the singleton loading for 
 
     :::php
     //$app->singleton(
-    //	'Illuminate\Contracts\Http\Kernel',
-    //	'App\Http\Kernel'
+    //	Illuminate\Contracts\Http\Kernel::class,
+    //	App\Http\Kernel::class
     //);
     
     $app->singleton(
-    	'Illuminate\Contracts\Http\Kernel',
-    	'EnvRoute\Http\Kernel'
+    	Illuminate\Contracts\Http\Kernel::class,
+    	EnvRoute\Http\Kernel::class
     );
 
 The EnvRoute version of the Http Kernel extends the default Http Kernel, so any future updates to the base framework
@@ -90,7 +90,7 @@ installation. Open your Laravel config file `config/app.php` and add the followi
 
         ...
 
-    	'EnvRoute\EnvRouteServiceProvider',
+    	EnvRoute\EnvRouteServiceProvider::class,
 
     ),
 
