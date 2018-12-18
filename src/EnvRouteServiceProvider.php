@@ -97,5 +97,3 @@ class EnvRouteServiceProvider extends ServiceProvider {
 		}
 	}
 }
-
-?>
