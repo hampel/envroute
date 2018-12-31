@@ -14,8 +14,8 @@ class Kernel extends HttpKernel {
 	 */
 	public function __construct(Application $app, Router $router)
 	{
-		$key = array_search('Illuminate\Foundation\Bootstrap\DetectEnvironment', $this->bootstrappers());
-		$this->bootstrappers[$key] = 'EnvRoute\Bootstrap\DetectEnvironment';
+		$key = array_search('Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables', $this->bootstrappers());
+		$this->bootstrappers[$key] = 'EnvRoute\Bootstrap\LoadEnvironmentVariables';
 
 		parent::__construct($app, $router);
 	}

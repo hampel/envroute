@@ -4,7 +4,7 @@ use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 use Illuminate\Contracts\Foundation\Application;
 
-class DetectEnvironment {
+class LoadEnvironmentVariables {
 
 	/**
 	 * Bootstrap the given application.

@@ -19,8 +19,8 @@
 	],
 	"require": {
 		"php": ">=5.5.0",
-		"illuminate/support": "~5.0",
-		"illuminate/filesystem": "~5.0"
+		"illuminate/support": "^5.4",
+		"illuminate/filesystem": "^5.4"
     },
     "autoload": {
         "psr-4": {
@@ -30,6 +30,11 @@
 	"extra": {
 		"branch-alias": {
 			"dev-master": "0.3.x-dev"
+		},
+		"laravel": {
+			"providers": [
+				"EnvRoute\\EnvRouteServiceProvider"
+			]
 		}
 	},
 	"minimum-stability": "dev",
