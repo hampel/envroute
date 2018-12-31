@@ -51,7 +51,7 @@ Require the package via Composer in your `composer.json`
     :::json
     {
         "require": {
-            "hampel/envroute": "^0.3"
+            "hampel/envroute": "^0.4"
         }
     }
 
@@ -81,18 +81,21 @@ should not cause any problems.
 **Note** - DO NOT change the namespace for your Laravel Framework - this package assumes that the base classes will be
 found in the default `App` namespace.
 
+Note - the following step should not be required in Laravel 5.5+, due to package autodiscovery. Verify that the 
+package was discovered as expected during installation, and then you may skip to the publish configuration step.
+
 To use the service provider loader, you will need to first add the EnvRoute service provider to your Laravel framework
 installation. Open your Laravel config file `config/app.php` and add the following service providers in the 
 `$providers` array:
 
     :::php
-    "providers" => array(
+    "providers" => [
 
         ...
 
     	EnvRoute\EnvRouteServiceProvider::class,
 
-    ),
+    ],    
 
 Next, publish the EnvRoute configuration:
 
@@ -111,25 +114,23 @@ The EnvRoute package changes the default environment detection mechanism for Lar
 The intention is to create a route prefix for each package you are developing and then you can configure a unique
 environment just for that package. For example - you could create a unique database connection for each package.
  
-Start by creating a route group for your package in the `app/Http/routes.php` file:
+Start by creating a route group for your package in the `routes/web.php` file:
 
     :::php
-    Route::group(array('prefix' => 'foo'), function()
-    {
+    Route::prefix('test')->group(function() {
+	
     	Route::get('/', function () {
-    		// exercise your package at /foo
+    		// exercise your package at /test
     	});
     
-    	Route::get('bar', function () {
-    		// exercise your package at /foo/bar
+    	Route::get('foo', function () {
+    		// exercise your package at /test/foo
     	});
     });
 
-Next, for our `foo` route prefix, create a `.env` file suffixed by the name of the route prefix - in this example, we
-would call our .env file `.env.foo`. You can then configure this .env file with any package unique settings which will
-be loaded whenever you visit a URL starting with `/foo`.
-
-**Note** the APP_ENV setting in the .env file is ignored when using this package.
+Next, for our `test` route prefix, create a `.env` file suffixed by the name of the route prefix - in this example, we
+would call our .env file `.env.test`. You can then configure this .env file with any package unique settings which will
+be loaded whenever you visit a URL starting with `/test`.
 
 ### Autoloading ###
 
@@ -140,33 +141,33 @@ previous step.
     :::php
     'packages' => [
     
-    	'foo' => [
-    		'path' => base_path() . '/packages/foo',
+    	'test' => [
+    		'path' => base_path() . '/packages/test',
     	],
     
     ],
     
-In the above example, we have a package named 'foo' (this doesn't have to correspond to the actual package name we are
+In the above example, we have a package named 'test' (this doesn't have to correspond to the actual package name we are
 testing - but it does have to correspond to the name of the route prefix). We define our route prefix for testing as
-`/foo` and a corresponding environment file `.foo.env`.
+`/test` and a corresponding environment file `.env.test`.
  
-Our configuration tells the autoloader that the foo package is being developed in the folder `/packages/foo` and once we
+Our configuration tells the autoloader that the 'test' package is being developed in the folder `/packages/test` and once we
 have run `composer update` in this folder to load all package dependencies and create the autoload file, our package
 is ready for testing.
 
 ### Service Providers ###
 
-If your package has service providers which need to be loaded, add them to a `providers` array key in the configuration.
-For example:
+If your package has Laravel service providers which need to be loaded, add them to a `providers` array key in the 
+configuration. For example:
 
     :::php
     'packages' => [
     
-    	'foo' => [
-    		'path' => base_path() . '/packages/foo',
+    	'test' => [
+    		'path' => base_path() . '/packages/test',
     
     		'providers' => [
-    			'FooInc\Foo',
+    			'Test\TestServiceProvider',
     		],
     	],
     ],
@@ -182,15 +183,16 @@ For example:
     :::php
     'packages' => [
     
-    	'foo' => [
-    		'path' => base_path() . '/packages/foo',
+    	'test' => [
+    		'path' => base_path() . '/packages/test',
     
     		'providers' => [
-    			'FooInc\Foo',
+    			'Test\TestServiceProvider',
     		],
     		
     		'aliases' => [
-    			'Foo' => 'FooInc\Foo\Facades\Foo',
+    			'Test' => 'Test\Facades\Test',
     		]
     	],
     ],
+
