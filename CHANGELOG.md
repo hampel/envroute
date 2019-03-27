@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+1.0.0 (2019-03-27)
+------------------
+
+* rewrote EnvRoute\Bootstrap\LoadEnvironmentVariables to be a subclass of 
+  Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables and simplify operation by augmenting the functionality of 
+  function checkForSpecificEnvironmentFile to identify our route based env
+* general code cleanup
+* tied this version of Laravel 5.5 in composer.json
+
 0.4.0 (2018-12-31)
 ------------------
 
