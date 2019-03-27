@@ -46,12 +46,15 @@ The package is built to work with the Laravel 5 Framework.
 
 The recommended way of installing the EnvRoute package is through [Composer](http://getcomposer.org):
 
-Require the package via Composer in your `composer.json`
+	:::bash
+	composer require "hampel/envroute"
+
+Or manually define it in your `composer.json`
 
     :::json
     {
         "require": {
-            "hampel/envroute": "^0.4"
+            "hampel/envroute": "~1.0"
         }
     }
 
@@ -81,22 +84,6 @@ should not cause any problems.
 **Note** - DO NOT change the namespace for your Laravel Framework - this package assumes that the base classes will be
 found in the default `App` namespace.
 
-Note - the following step should not be required in Laravel 5.5+, due to package autodiscovery. Verify that the 
-package was discovered as expected during installation, and then you may skip to the publish configuration step.
-
-To use the service provider loader, you will need to first add the EnvRoute service provider to your Laravel framework
-installation. Open your Laravel config file `config/app.php` and add the following service providers in the 
-`$providers` array:
-
-    :::php
-    "providers" => [
-
-        ...
-
-    	EnvRoute\EnvRouteServiceProvider::class,
-
-    ],    
-
 Next, publish the EnvRoute configuration:
 
     :::bash
@@ -109,7 +96,7 @@ Usage
 
 ### Routes ###
 
-The EnvRoute package changes the default environment detection mechanism for Laravel 5, from on the base route called.
+The EnvRoute package changes the default environment detection mechanism.
 
 The intention is to create a route prefix for each package you are developing and then you can configure a unique
 environment just for that package. For example - you could create a unique database connection for each package.
@@ -132,6 +119,14 @@ Next, for our `test` route prefix, create a `.env` file suffixed by the name of 
 would call our .env file `.env.test`. You can then configure this .env file with any package unique settings which will
 be loaded whenever you visit a URL starting with `/test`.
 
+**Important** - you must also set the APP_ENV variable within your .env file to match the route prefix.
+
+	APP_NAME="My Test Package"
+	APP_ENV=test
+	
+This is important, since it is the APP_ENV variable which will determine which packages are autoloaded by the EnvRoute
+service provider.
+
 ### Autoloading ###
 
 To set up autoloading of your package files, edit the `config/envroute.php`, configuration file to add the path to your
@@ -149,11 +144,11 @@ previous step.
     
 In the above example, we have a package named 'test' (this doesn't have to correspond to the actual package name we are
 testing - but it does have to correspond to the name of the route prefix). We define our route prefix for testing as
-`/test` and a corresponding environment file `.env.test`.
+`/test` and a corresponding environment file `.env.test` and an APP_ENV value of `test`.
  
-Our configuration tells the autoloader that the 'test' package is being developed in the folder `/packages/test` and once we
-have run `composer update` in this folder to load all package dependencies and create the autoload file, our package
-is ready for testing.
+Our configuration tells the autoloader that the 'test' package is being developed in the folder `/packages/test` and 
+once we have run `composer update` in this folder to load all package dependencies and create the autoload file, our 
+package is ready for testing.
 
 ### Service Providers ###
 
