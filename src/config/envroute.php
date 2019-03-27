@@ -3,7 +3,7 @@
  * Configuration for EnvRoute
  */
 
-return array(
+return [
 
 	'packages' => [
 
@@ -20,14 +20,14 @@ return array(
 //			'path' => base_path() . '/packages/test',
 //
 //			'providers' => [
-//				'Hampel\Test\TestServiceProvider',
+//				Hampel\Test\TestServiceProvider::class,
 //			],
 //
 //			'aliases' => [
-//				'Test' => 'Hampel\Test\Facades\Test',
+//				'Test' => Hampel\Test\Facades\Test::class,
 //			],
 //		],
 
 	],
 
-);
+];
