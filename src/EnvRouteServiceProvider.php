@@ -41,18 +41,37 @@ class EnvRouteServiceProvider extends ServiceProvider {
 	protected function loadDependencies($package, $env)
 	{
 		$files = new Filesystem();
-		if (!$files->exists($package['path'] . '/composer.json'))
+
+		if (!isset($package['path']))
 		{
-			die("Could not locate composer.json file, [" . $package['path'] . "] does not seem to be a valid package directory");
+			die("No path specified for package {$env} in envroute config");
 		}
 
-		if (!$files->exists($package['path'] . '/vendor/autoload.php'))
+		$this->requirePackage($files, $package['path'], $env);
+
+		if (isset($package['require']))
 		{
-			die("Could not autoload dependencies for package {$env}, vendor autoload file not found. Please run 'composer update' in the folder [" . $package['path'] . "]");
+			foreach ($package['require'] as $path)
+			{
+				$this->requirePackage($files, $path, $env);
+			}
+		}
+	}
+
+	protected function requirePackage(Filesystem $files, $path, $env)
+	{
+		if (!$files->exists($path . '/composer.json'))
+		{
+			die("Could not locate composer.json file, [" . $path . "] does not seem to be a valid package directory");
+		}
+
+		if (!$files->exists($path . '/vendor/autoload.php'))
+		{
+			die("Could not autoload dependencies for package {$env}, vendor autoload file not found. Please run 'composer update' in the folder [" . $path . "]");
 		}
 
 		// autoload dependencies
-		$files->requireOnce($package['path'] . '/vendor/autoload.php');
+		$files->requireOnce($path . '/vendor/autoload.php');
 	}
 
 	/**

@@ -1,7 +1,7 @@
 EnvRoute for Laravel
 ====================
 
-By [Simon Hampel](http://hampelgroup.com/).
+By [Simon Hampel](mailto:simon@hampelgroup.com).
 
 This package provides route-based environment detection and configuration for Laravel v5.x - it is intended for use in 
 development environments for testing packages using Laravel as a test harness.

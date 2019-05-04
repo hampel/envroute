@@ -28,7 +28,7 @@ class LoadEnvironmentVariables extends BaseLoadEnvironmentVariables {
 			}
 		}
 
-        if (! env('APP_ENV')) {
+		if (! env('APP_ENV')) {
             return;
         }
 
