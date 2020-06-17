@@ -1,6 +1,7 @@
 <?php namespace EnvRoute\Bootstrap;
 
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables as BaseLoadEnvironmentVariables;
+use Illuminate\Support\Env;
 
 class LoadEnvironmentVariables extends BaseLoadEnvironmentVariables {
 
@@ -28,12 +29,14 @@ class LoadEnvironmentVariables extends BaseLoadEnvironmentVariables {
 			}
 		}
 
-		if (! env('APP_ENV')) {
+        $environment = Env::get('APP_ENV');
+
+        if (! $environment) {
             return;
         }
 
         $this->setEnvironmentFilePath(
-            $app, $app->environmentFile().'.'.env('APP_ENV')
+            $app, $app->environmentFile().'.'.$environment
         );
 	}
 
