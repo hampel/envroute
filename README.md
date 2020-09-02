@@ -1,6 +1,11 @@
 EnvRoute for Laravel
 ====================
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/hampel/envroute.svg?style=flat-square)](https://packagist.org/packages/hampel/envroute)
+[![Total Downloads](https://img.shields.io/packagist/dt/hampel/envroute.svg?style=flat-square)](https://packagist.org/packages/hampel/alerts)
+[![Open Issues](https://img.shields.io/bitbucket/issues/hampel/envroute.svg?style=flat-square)](https://bitbucket.org/hampel/envroute/issues)
+[![License](https://img.shields.io/packagist/l/hampel/envroute.svg?style=flat-square)](https://packagist.org/packages/hampel/envroute)
+
 By [Simon Hampel](mailto:simon@hampelgroup.com).
 
 This package provides route-based environment detection and configuration for Laravel v5.x|v6.x|v7.x - it is intended 
