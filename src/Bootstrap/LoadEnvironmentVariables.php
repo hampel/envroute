@@ -2,17 +2,16 @@
 
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables as BaseLoadEnvironmentVariables;
 use Illuminate\Support\Env;
+use Symfony\Component\Console\Input\ArgvInput;
 
 class LoadEnvironmentVariables extends BaseLoadEnvironmentVariables {
 
 	protected function checkForSpecificEnvironmentFile($app)
 	{
-        if ($app->runningInConsole() && ($input = new ArgvInput)->hasParameterOption('--env')) {
-            if ($this->setEnvironmentFilePath(
-                $app, $app->environmentFile().'.'.$input->getParameterOption('--env')
-            )) {
-                return;
-            }
+        if ($app->runningInConsole() &&
+            ($input = new ArgvInput)->hasParameterOption('--env') &&
+            $this->setEnvironmentFilePath($app, $app->environmentFile().'.'.$input->getParameterOption('--env'))) {
+            return;
         }
 
         // EnvRoute uses the first segment of the path to determine the environment to load
