@@ -1,6 +1,19 @@
 CHANGELOG
 =========
 
+1.3.0 (2022-08-11)
+------------------
+
+* works with Laravel 9.x
+* update modified LoadEnvironmentVariables to match that used in Laravel 9
+* move config out of src directory
+* mergeConfigFrom should be in register method
+
+1.2.0 (2022-08-10)
+------------------
+
+* works with Laravel 8.x
+
 1.1.0 (2020-06-17)
 ------------------
 
