@@ -6,6 +6,18 @@ use Illuminate\Support\ServiceProvider;
 
 class EnvRouteServiceProvider extends ServiceProvider {
 
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/envroute.php', 'envroute'
+        );
+    }
+
 	public function boot()
 	{
 		$this->defineConfiguration();
@@ -26,12 +38,8 @@ class EnvRouteServiceProvider extends ServiceProvider {
 	protected function defineConfiguration()
 	{
 		$this->publishes([
-			__DIR__ . '/config/envroute.php' => config_path('envroute.php'),
+            __DIR__ . '/../config/envroute.php' => config_path('envroute.php'),
 		], 'config');
-
-		$this->mergeConfigFrom(
-			__DIR__ . '/config/envroute.php', 'envroute'
-		);
 	}
 
 	/**
