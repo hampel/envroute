@@ -8,8 +8,8 @@ EnvRoute for Laravel
 
 By [Simon Hampel](mailto:simon@hampelgroup.com).
 
-This package provides route-based environment detection and configuration for Laravel v5.x|v6.x|v7.x|v8.x|v9.x - it is intended 
-for use in development environments for testing packages using Laravel as a test harness.
+This package provides route-based environment detection and configuration for Laravel v5.x|v6.x|v7.x|v8.x|v9.x|v10.x
+- it is intended for use in development environments for testing packages using Laravel as a test harness.
 
 This is not just for developing Laravel specific packages - any type of package can use this environment for testing,
 Laravel just provides a convenient test harness for us, making it easier to exercise our packages while developing.
