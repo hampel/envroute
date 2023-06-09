@@ -1,7 +1,7 @@
 {
     "name": "hampel/envroute",
-    "description": "Package for customising the Laravel environment based on route",
 	"homepage" : "https://bitbucket.org/hampel/envroute",
+    "description": "Laravel package for switching the environment based on route",
 	"authors": [{
 		"name": "Simon Hampel",
 		"email": "simon@hampelgroup.com"

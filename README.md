@@ -1,6 +1,8 @@
 EnvRoute for Laravel
 ====================
 
+Laravel package for switching the environment based on route
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/hampel/envroute.svg?style=flat-square)](https://packagist.org/packages/hampel/envroute)
 [![Total Downloads](https://img.shields.io/packagist/dt/hampel/envroute.svg?style=flat-square)](https://packagist.org/packages/hampel/alerts)
 [![Open Issues](https://img.shields.io/bitbucket/issues/hampel/envroute.svg?style=flat-square)](https://bitbucket.org/hampel/envroute/issues)
