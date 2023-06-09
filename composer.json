@@ -1,14 +1,14 @@
 {
     "name": "hampel/envroute",
-	"homepage" : "https://bitbucket.org/hampel/envroute",
     "description": "Laravel package for switching the environment based on route",
+	"homepage" : "https://github.com/hampel/envroute",
 	"authors": [{
 		"name": "Simon Hampel",
 		"email": "simon@hampelgroup.com"
 	}],
 	"support": {
-		"issues": "https://bitbucket.org/hampel/envroute/issues",
-		"source": "https://bitbucket.org/hampel/envroute/src"
+		"issues": "https://github.com/hampel/envroute/issues",
+		"source": "https://github.com/hampel/envroute"
 	},
 	"keywords" : [
 		"laravel",
