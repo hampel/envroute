@@ -12,7 +12,8 @@
 	},
 	"keywords" : [
 		"laravel",
-		"environment"
+		"environment",
+        "route"
 	],
 	"license" : [
 		"MIT"

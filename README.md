@@ -8,9 +8,9 @@ Laravel package for switching the environment based on route
 [![Open Issues](https://img.shields.io/github/issues-raw/hampel/envroute.svg?style=flat-square)](https://github.com/hampel/envroute/issues)
 [![License](https://img.shields.io/packagist/l/hampel/envroute.svg?style=flat-square)](https://packagist.org/packages/hampel/envroute)
 
-By [Simon Hampel](mailto:simon@hampelgroup.com).
+By [Simon Hampel](mailto:simon@hampelgroup.com)
 
-This package provides route-based environment detection and configuration for Laravel v5.x|v6.x|v7.x|v8.x|v9.x|v10.x
+This package provides route-based environment detection and configuration for Laravel v8.x|v9.x|v10.x
 - it is intended for use in development environments for testing packages using Laravel as a test harness.
 
 This is not just for developing Laravel specific packages - any type of package can use this environment for testing,
@@ -49,39 +49,25 @@ environment configuration to test in.
 Installation
 ------------
 
-The recommended way of installing the EnvRoute package is through [Composer](http://getcomposer.org):
+To install using composer, run the following command:
 
-	:::bash
-	composer require "hampel/envroute"
-
-Or manually define it in your `composer.json`
-
-    :::json
-    {
-        "require": {
-            "hampel/envroute": "^1.0"
-        }
-    }
-
-Run Composer to update the new requirement.
-
-    :::bash
-    $ composer update
+`composer require hampel/calendar`
 
 You will need to swap out the default Http Kernel with the one provided by this package by editing the app bootstrap
 file. Edit `bootstrap/app.php`, remove or comment out the singleton loading for `App\Http\Kernel` and replace it with
 `EnvRoute\Http\Kernel`.
 
-    :::php
-    //$app->singleton(
-    //	Illuminate\Contracts\Http\Kernel::class,
-    //	App\Http\Kernel::class
-    //);
-    
-    $app->singleton(
-    	Illuminate\Contracts\Http\Kernel::class,
-    	EnvRoute\Http\Kernel::class
-    );
+```php
+//$app->singleton(
+//	Illuminate\Contracts\Http\Kernel::class,
+//	App\Http\Kernel::class
+//);
+
+$app->singleton(
+    Illuminate\Contracts\Http\Kernel::class,
+    EnvRoute\Http\Kernel::class
+);
+```
 
 The EnvRoute version of the Http Kernel extends the default Http Kernel, so any future updates to the base framework
 should not cause any problems.
@@ -91,8 +77,9 @@ found in the default `App` namespace.
 
 Next, publish the EnvRoute configuration:
 
-    :::bash
-    $ php artisan vendor:publish --provider="EnvRoute\EnvRouteServiceProvider"
+```bash
+$ php artisan vendor:publish --provider="EnvRoute\EnvRouteServiceProvider"
+```
 
 Follow the instructions in the usage section for how to configure EnvRoute to work with your packages. 
 
@@ -108,27 +95,30 @@ environment just for that package. For example - you could create a unique datab
  
 Start by creating a route group for your package in the `routes/web.php` file:
 
-    :::php
-    Route::prefix('test')->group(function() {
-	
-    	Route::get('/', function () {
-    		// exercise your package at /test
-    	});
-    
-    	Route::get('foo', function () {
-    		// exercise your package at /test/foo
-    	});
+```php
+Route::prefix('foo')->group(function() {
+
+    Route::get('/', function () {
+        // exercise your package at /foo
     });
 
-Next, for our `test` route prefix, create a `.env` file suffixed by the name of the route prefix - in this example, we
-would call our .env file `.env.test`. You can then configure this .env file with any package unique settings which will
-be loaded whenever you visit a URL starting with `/test`.
+    Route::get('bar', function () {
+        // exercise your package at /foo/bar
+    });
+});
+```
+
+Next, for our `foo` route prefix, create a `.env` file suffixed by the name of the route prefix - in this example, we
+would call our .env file `.env.foo`. You can then configure this .env file with any package unique settings which will
+be loaded whenever you visit a URL starting with `/foo`.
 
 **Important** - you must also set the APP_ENV variable within your .env file to match the route prefix.
 
-	APP_NAME="My Test Package"
-	APP_ENV=test
-	
+```
+APP_NAME="My Test Package"
+APP_ENV=foo
+```
+
 This is important, since it is the APP_ENV variable which will determine which packages are autoloaded by the EnvRoute
 service provider.
 
@@ -138,20 +128,21 @@ To set up autoloading of your package files, edit the `config/envroute.php`, con
 package. The list of packages is an array, with each key corresponding to the environment route we set up in the 
 previous step.
 
-    :::php
-    'packages' => [
-    
-    	'test' => [
-    		'path' => base_path() . '/packages/test',
-    	],
-    
+```php
+'packages' => [
+
+    'foo' => [
+        'path' => base_path() . '/packages/foo',
     ],
-    
-In the above example, we have a package named 'test' (this doesn't have to correspond to the actual package name we are
+
+],
+```
+
+In the above example, we have a package named 'foo' (this doesn't have to correspond to the actual package name we are
 testing - but it does have to correspond to the name of the route prefix). We define our route prefix for testing as
-`/test` and a corresponding environment file `.env.test` and an APP_ENV value of `test`.
+`/foo` and a corresponding environment file `.env.foo` and an APP_ENV value of `foo`.
  
-Our configuration tells the autoloader that the 'test' package is being developed in the folder `/packages/test` and 
+Our configuration tells the autoloader that the 'foo' package is being developed in the folder `/packages/foo` and 
 once we have run `composer update` in this folder to load all package dependencies and create the autoload file, our 
 package is ready for testing.
 
@@ -160,17 +151,18 @@ package is ready for testing.
 If your package has Laravel service providers which need to be loaded, add them to a `providers` array key in the 
 configuration. For example:
 
-    :::php
-    'packages' => [
-    
-    	'test' => [
-    		'path' => base_path() . '/packages/test',
-    
-    		'providers' => [
-    			'Test\TestServiceProvider',
-    		],
-    	],
+```php
+'packages' => [
+
+    'foo' => [
+        'path' => base_path() . '/packages/foo',
+
+        'providers' => [
+            'Foo\ServiceProvider',
+        ],
     ],
+],
+```
 
 Note that this isn't restricted to just your packages own service providers - any other service providers your package
 (or test harness) depends on which aren't already loaded by the base framework should be added to the providers array. 
@@ -180,19 +172,19 @@ Note that this isn't restricted to just your packages own service providers - an
 If your package has an alias (facade) which need to be loaded, add them to a `aliases` array key in the configuration.
 For example:
 
-    :::php
-    'packages' => [
-    
-    	'test' => [
-    		'path' => base_path() . '/packages/test',
-    
-    		'providers' => [
-    			'Test\TestServiceProvider',
-    		],
-    		
-    		'aliases' => [
-    			'Test' => 'Test\Facades\Test',
-    		]
-    	],
-    ],
+```php
+'packages' => [
 
+    'foo' => [
+        'path' => base_path() . '/packages/foo',
+
+        'providers' => [
+            'Foo\ServiceProvider',
+        ],
+        
+        'aliases' => [
+            'Foo' => 'Foo\Facades\Foo',
+        ]
+    ],
+],
+```
