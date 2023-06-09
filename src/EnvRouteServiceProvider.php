@@ -2,6 +2,7 @@
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Support\ServiceProvider;
 
 class EnvRouteServiceProvider extends ServiceProvider {
@@ -32,6 +33,8 @@ class EnvRouteServiceProvider extends ServiceProvider {
 			$this->loadDependencies($package, $env);
 			$this->registerServiceProviders($package);
 			$this->registerAliases($package);
+
+            $this->addAboutOutput($env, $package);
 		}
 	}
 
@@ -113,4 +116,18 @@ class EnvRouteServiceProvider extends ServiceProvider {
 			}
 		}
 	}
+
+    /**
+     * @return void
+     */
+    protected function addAboutOutput(string $env, array $package): void
+    {
+        // About command was added in Laravel 9.21.0, so only invoke it if we're running a later version
+        if ($this->app->runningInConsole() && version_compare($this->app->version(), '9.21.0', '>='))
+        {
+            AboutCommand::add("EnvRoute [{$env}]", fn() => [
+                'Path' => $package['path']
+            ]);
+        }
+    }
 }
